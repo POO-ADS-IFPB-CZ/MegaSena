@@ -1,5 +1,7 @@
 package com.ifpb.megasena.model;
 
+import java.util.Arrays;
+
 public class Jogo {
 
     private int numeros[];
@@ -11,10 +13,12 @@ public class Jogo {
     }
 
     public boolean inserir(int numero) {
-        if(isCheio()) {
+        if(isCheio() || !isValido(numero) || isPresente(numero)) {
             return false;
         }
-        numeros[quantidade++] = numero;
+        numeros[0] = numero;
+        Arrays.sort(numeros);
+        quantidade++;
         return true;
     }
 
@@ -22,13 +26,17 @@ public class Jogo {
         return quantidade >= numeros.length;
     }
 
+    public boolean isValido(int numero){
+        return numero>0 && numero<=60;
+    }
+
+    public boolean isPresente(int numero){
+        return Arrays.binarySearch(numeros, numero) >= 0;
+    }
+
     @Override
     public String toString(){
-        String retorno = "";
-
-        for(int i : numeros){
-            retorno += i + " ";
-        }
-        return retorno += "\n";
+        Arrays.sort(numeros);
+        return Arrays.toString(numeros);
     }
 }
